@@ -48,30 +48,26 @@
 **
 ****************************************************************************/
 
-#include <QApplication>
-#include <QLabel>
-#include <QSurfaceFormat>
+#ifndef GEOMETRYENGINE_H
+#define GEOMETRYENGINE_H
 
-#ifndef QT_NO_OPENGL
-#include "mainwidget.h"
-#endif
+#include <QOpenGLFunctions>
+#include <QOpenGLShaderProgram>
+#include <QOpenGLBuffer>
 
-int main(int argc, char *argv[])
+class GeometryEngine : protected QOpenGLFunctions
 {
-    QApplication app(argc, argv);
+public:
+    GeometryEngine();
+    virtual ~GeometryEngine();
 
-    QSurfaceFormat format;
-    format.setDepthBufferSize(24);
-    QSurfaceFormat::setDefaultFormat(format);
+    void drawCubeGeometry(QOpenGLShaderProgram *program);
 
-    app.setApplicationName("cube");
-    app.setApplicationVersion("0.1");
-#ifndef QT_NO_OPENGL
-    MainWidget widget;
-    widget.show();
-#else
-    QLabel note("OpenGL Support required");
-    note.show();
-#endif
-    return app.exec();
-}
+private:
+    void initCubeGeometry();
+
+    QOpenGLBuffer arrayBuf;
+    QOpenGLBuffer indexBuf;
+};
+
+#endif // GEOMETRYENGINE_H
